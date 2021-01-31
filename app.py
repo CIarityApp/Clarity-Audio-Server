@@ -1,6 +1,6 @@
 from flask import Flask, request
 import os
-# import clean.py as clean
+import clean.py as clean
 app = Flask(__name__)
 
 UPLOAD_DESTINATION = 'assets/'
@@ -25,21 +25,21 @@ def allowed_file(filename):
 
 @app.route("/upload", methods=['POST'])
 def upload_and_clean():
+    # Check that file exists
     if 'file' not in request.files:
         return 'File Not Found', 404
     file = request.files['file']
 
+    # Check that filename exists
     if len(file.filename) <= 0:
         return 'Invalid File', 401
+    # Check that file is valid
     if file and allowed_file(file.filename):
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-        return ''
+        clean.clean_audio('/assets/' + file.filename, '/assets/hospital_icu.mp3')
+        return '', 201
     else:
         return 'File Not Allowed', 401
-    # final_addy = clean-audio.clean_audio(input_addy, bg_addy)
-
-    # new_msgs.append(final_addy)
-    # return '', 204
     
 if __name__ == "__main__":
     app.run(debug=True)
