@@ -114,8 +114,6 @@ def clean_audio(input_addy, bg_addy):
     overlay_audio(input_addy, invert_addy, fixed_addy)
     equalize(fixed_addy, podcastified_addy)
 
-    # write the file from final addy to firebase
-
     return(podcastified_addy)
 
 # clean_audio(os.getcwd() + '/server/assets/tests/marc_hospital.mp3', os.getcwd() + '/server/assets/tests/hospital_icu.mp3')
