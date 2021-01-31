@@ -1,5 +1,6 @@
 from flask import Flask, request
 import os
+import random
 
 import firebase_admin
 from firebase import firebase
@@ -13,9 +14,10 @@ UPLOAD_DESTINATION = 'tmp/'
 ALLOWED_EXTENSIONS = ['caf', 'mp3', 'mp4', 'wav', 'heic']
 
 cred = credentials.Certificate("key.json")
-firebase_admin.initialize_app(cred, { 'storageBucket': 'clarity-81765.appspot.com' })
+firebase_admin.initialize_app(cred, { 'storageBucket': 'clarity-81765.appspot.com', 'databaseURL': 'https://clarity-81765-default-rtdb.firebaseio.com/' })
 realtime = firebase.FirebaseApplication('https://clarity-81765-default-rtdb.firebaseio.com/', None)
 # realtime = db.ref('clarity-81765-default-rtdb')
+ref = db.reference('files')
 bucket = storage.bucket()
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_DESTINATION
@@ -50,15 +52,18 @@ def upload_and_clean():
         file.save(os.path.join(MY_DIR, file.filename))
         file_loc = MY_DIR + '/' + file.filename
         # final_file_addr = clean.clean_audio(file_loc, MY_DIR + '/assets/hospital_icu.mp3')
+
+        uuid = random.randint(1000, 9999)
         
         # Upload to firebase
-        blob = bucket.blob('actual.caf')
+        blob = bucket.blob(str(uuid) + '.caf')
         blob.upload_from_filename(file_loc)
         blob.make_public()
 
-        info = realtime.post('files', { "next": 'actual.caf' })
+        next_ref = ref.child('next')
+        next_ref.set(str(uuid) + '.caf')
 
-        return info, 201
+        return str(uuid) + '.caf', 201
     else:
         return 'File Not Allowed', 401
     
