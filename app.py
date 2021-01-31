@@ -17,6 +17,9 @@ def outgoing():
 
 @app.route("/incoming", methods=['POST'])
 def incoming():
+    final_addy = clean-audio.clean_audio(input_addy, bg_addy)
+
+    new_msgs.append(final_addy)
     return '', 204
     
 if __name__ == "__main__":
