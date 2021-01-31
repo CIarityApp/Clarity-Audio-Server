@@ -5,7 +5,7 @@ import firebase_admin
 from firebase import firebase
 from firebase_admin import credentials, firestore, initialize_app, storage
 
-# import clean.py as clean
+import clean
 app = Flask(__name__)
 
 MY_DIR = os.path.dirname(__file__)
@@ -47,10 +47,10 @@ def upload_and_clean():
     # Check that file is valid
     if file and allowed_file(file.filename):
         file.save(os.path.join(MY_DIR, file.filename))
-        # final_file_addr = clean.clean_audio('/assets/' + file.filename, '/assets/hospital_icu.mp3')
+        file_loc = MY_DIR + '/' + file.filename
+        final_file_addr = clean.clean_audio(file_loc, '/assets/hospital_icu.mp3')
         
         # Upload to firebase
-        file_loc = MY_DIR + '/' + file.filename
         blob = bucket.blob(file.filename)
         blob.upload_from_filename(file_loc)
         blob.make_public()
