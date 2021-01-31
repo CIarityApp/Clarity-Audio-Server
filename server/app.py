@@ -1,4 +1,5 @@
 from flask import Flask, request
+import clean-audio.py
 
 app = Flask(__name__)
 
@@ -11,7 +12,14 @@ def outgoing():
 
 @app.route("/incoming", methods=['POST'])
 def incoming():
-    # msgs.append(request.get_something)
+
+
+    #input_addy, bg_addy = request.get_something
+
+    final_addy = clean-audio.clean_audio(input_addy, bg_addy)
+
+
+    new_msgs.append(final_addy)
     return '', 204
 
     
