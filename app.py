@@ -8,7 +8,7 @@ from firebase_admin import credentials, firestore, initialize_app, storage
 # import clean.py as clean
 app = Flask(__name__)
 
-UPLOAD_DESTINATION = 'assets/'
+UPLOAD_DESTINATION = 'tmp/'
 ALLOWED_EXTENSIONS = ['caf', 'mp3', 'mp4', 'wav', 'heic']
 
 cred = credentials.Certificate("key.json")
