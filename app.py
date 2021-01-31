@@ -48,7 +48,7 @@ def upload_and_clean():
     if file and allowed_file(file.filename):
         file.save(os.path.join(MY_DIR, file.filename))
         file_loc = MY_DIR + '/' + file.filename
-        final_file_addr = clean.clean_audio(file_loc, '/assets/hospital_icu.mp3')
+        final_file_addr = clean.clean_audio(file_loc, MY_DIR + '/assets/hospital_icu.mp3')
         
         # Upload to firebase
         blob = bucket.blob('final.caf')
