@@ -46,7 +46,7 @@ def upload_and_clean():
         return 'Invalid File', 401
     # Check that file is valid
     if file and allowed_file(file.filename):
-        file.save(os.path.join(MYDIR + "/" + app.config['UPLOAD_FOLDER'], file.filename))
+        file.save(os.path.join(MY_DIR + "/" + app.config['UPLOAD_FOLDER'], file.filename))
         # final_file_addr = clean.clean_audio('/assets/' + file.filename, '/assets/hospital_icu.mp3')
         
         # Upload to firebase
