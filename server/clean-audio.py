@@ -30,7 +30,15 @@ def overlay_audio(voice_addy, bg_addy, final_addy):
     process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
 
-def equalize(input, outname):
+def equalize(voice_addy, podcastified_addy):
+    command = 'ffmpeg -i {0} -af afftdn=nf=-60,anlmdn=s=4:p=0.002:r=0.002:m=15 {1}'.format(voice_addy, podcastified_addy)
+    
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    # EQUALIZER: equalizer=f={2}:width_type=h:width={3}:g={4}
+    # BANDREJECT: bandreject=f=12000:width_type=h:width=10000,\x
+    # LOWERPASS: lowpass=f=2500 {1}'.format(input, wavname, center, width, gain)
+def equalized(input, outname):
 
     dirname= os.getcwd() + '/server/assets'
     wavname = (dirname+'/'+outname+'.wav').replace(" ", "_")
@@ -46,7 +54,7 @@ def equalize(input, outname):
     output, error = process.communicate()
  
 def create_spectro(infile, outname):
-    dirname= os.getcwd() + '/server/assets'
+    dirname= os.getcwd() + '/server/assets/tests/'
     wavname=(dirname+'/'+outname+'.wav')
 
     command="ffmpeg -i %s -ar 44100 -ac 1 %s" % (infile, wavname)
@@ -96,13 +104,22 @@ def create_spectro(infile, outname):
 
 def clean_audio(input_addy, bg_addy):
     invert_filename = 'inverted'
-    final_filename = 'final'
+    fixed_filename = 'final'
+    podcastified_filename = 'podcastified'
     invert_addy = os.getcwd() + '/server/assets/tests/' + invert_filename + '.wav'
-    final_addy = os.getcwd() + '/server/assets/tests/' + final_filename + '.wav'
+    fixed_addy = os.getcwd() + '/server/assets/tests/' + fixed_filename + '.wav'
+    podcastified_addy = os.getcwd() + '/server/assets/tests/' + podcastified_filename + '.wav'
 
     invert_audio(bg_addy, invert_addy)
-    overlay_audio(input_addy, invert_addy, final_addy)
+    overlay_audio(input_addy, invert_addy, fixed_addy)
+    equalize(fixed_addy, podcastified_addy)
 
     # write the file from final addy to firebase
 
-clean_audio(os.getcwd() + '/server/assets/tests/marc_ambu.mp3', os.getcwd() + '/server/assets/tests/ambu.mp3')
+    return(podcastified_addy)
+
+# clean_audio(os.getcwd() + '/server/assets/tests/marc_hospital.mp3', os.getcwd() + '/server/assets/tests/hospital_icu.mp3')
+# clean_audio(os.getcwd() + '/server/assets/tests/marc_ambu.mp3', os.getcwd() + '/server/assets/tests/ambu.mp3')
+
+# create_spectro(os.getcwd() + '/server/assets/tests/final.wav', 'fixed')
+# create_spectro(os.getcwd() + '/server/assets/tests/podcastified.wav', 'podcast')
