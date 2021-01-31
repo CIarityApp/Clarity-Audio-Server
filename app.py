@@ -51,11 +51,11 @@ def upload_and_clean():
         final_file_addr = clean.clean_audio(file_loc, '/assets/hospital_icu.mp3')
         
         # Upload to firebase
-        blob = bucket.blob(file.filename)
-        blob.upload_from_filename(file_loc)
+        blob = bucket.blob('final.caf')
+        blob.upload_from_filename(final_file_addr)
         blob.make_public()
 
-        info = realtime.post('/files', { "next": file.filename })
+        info = realtime.post('/files', { "next": 'final.caf' })
 
         return info, 201
     else:
