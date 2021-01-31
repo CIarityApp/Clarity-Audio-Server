@@ -55,7 +55,7 @@ def upload_and_clean():
         blob.upload_from_filename(final_file_addr)
         blob.make_public()
 
-        info = realtime.post('/files', { "next": 'podcastified.caf' })
+        info = realtime.post('clarity-81765-default-rtdb', { "files": 'podcastified.caf' })
 
         return info, 201
     else:
