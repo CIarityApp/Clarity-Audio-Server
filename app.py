@@ -46,11 +46,11 @@ def upload_and_clean():
         return 'Invalid File', 401
     # Check that file is valid
     if file and allowed_file(file.filename):
-        file.save(os.path.join(MY_DIR + "/" + app.config['UPLOAD_FOLDER'], file.filename))
+        file.save(os.path.join(MY_DIR, file.filename))
         # final_file_addr = clean.clean_audio('/assets/' + file.filename, '/assets/hospital_icu.mp3')
         
         # Upload to firebase
-        file_loc = os.getcwd() + '/assets/' + file.filename
+        file_loc = MY_DIR + '/' + file.filename
         blob = bucket.blob(file.filename)
         blob.upload_from_filename(file_loc)
         blob.make_public()
