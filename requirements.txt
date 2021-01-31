@@ -11,3 +11,4 @@ Wave==0.0.2
 firebase_admin
 requests
 python-firebase
+gunicorn
