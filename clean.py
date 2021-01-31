@@ -12,7 +12,7 @@ def get_file_paths():
     """
     Get paths to all audio files.
     """
-    audio_folder = os.getcwd() + '/server/assets'
+    audio_folder = os.getcwd() + '/assets'
 
     audio_addy_list = []
     for file in os.scandir(audio_folder):
@@ -40,7 +40,7 @@ def equalize(voice_addy, podcastified_addy):
     # LOWERPASS: lowpass=f=2500 {1}'.format(input, wavname, center, width, gain)
 def equalized(input, outname):
 
-    dirname= os.getcwd() + '/server/assets'
+    dirname= os.getcwd() + '/assets'
     wavname = (dirname+'/'+outname+'.wav').replace(" ", "_")
     center = 500
     width = 200
@@ -54,7 +54,7 @@ def equalized(input, outname):
     output, error = process.communicate()
  
 def create_spectro(infile, outname):
-    dirname= os.getcwd() + '/server/assets/tests/'
+    dirname= os.getcwd() + '/assets'
     wavname=(dirname+'/'+outname+'.wav')
 
     command="ffmpeg -i %s -ar 44100 -ac 1 %s" % (infile, wavname)
@@ -106,9 +106,9 @@ def clean_audio(input_addy, bg_addy):
     invert_filename = 'inverted'
     fixed_filename = 'final'
     podcastified_filename = 'podcastified'
-    invert_addy = os.getcwd() + '/server/assets/tests/' + invert_filename + '.wav'
-    fixed_addy = os.getcwd() + '/server/assets/tests/' + fixed_filename + '.wav'
-    podcastified_addy = os.getcwd() + '/server/assets/tests/' + podcastified_filename + '.wav'
+    invert_addy = os.getcwd() + '/assets' + invert_filename + '.wav'
+    fixed_addy = os.getcwd() + '/assets/' + fixed_filename + '.wav'
+    podcastified_addy = os.getcwd() + '/assets/' + podcastified_filename + '.wav'
 
     invert_audio(bg_addy, invert_addy)
     overlay_audio(input_addy, invert_addy, fixed_addy)
