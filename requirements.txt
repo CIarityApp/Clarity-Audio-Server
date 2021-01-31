@@ -12,3 +12,4 @@ firebase_admin
 requests
 python-firebase
 gunicorn
+flask
